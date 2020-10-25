@@ -62,6 +62,7 @@ def get_newsroom_post():
         print(link)
         print(date)
         print(image)
+        print('\n\n')
         # time.sleep(3600)
         # check_internet()
         return random_article
