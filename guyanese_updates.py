@@ -3,7 +3,7 @@
 import praw
 from newsroom import get_newsroom_post
 from villagevoice import get_villagevoice_post
-from kaieteur import get_kaieteur_post
+#from kaieteur import get_kaieteur_post
 # import requests
 # import bs4
 import random
@@ -50,16 +50,16 @@ def make_reddit_post(article):
 
 
 def choose_random_agency():
-    agency_number = random.randrange(0, 3)
+    agency_number = random.randrange(0, 2)
     print(agency_number)
     if agency_number == 0:
         return get_newsroom_post()
     elif agency_number == 1:
         return get_villagevoice_post()
-    elif agency_number == 2:
-        return get_kaieteur_post()
-    else:
-        return get_newsroom_post()
+#     elif agency_number == 2:
+#         return get_kaieteur_post()
+#     else:
+#         return get_newsroom_post()
 
 
 
