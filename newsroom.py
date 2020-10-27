@@ -30,7 +30,7 @@ def get_newsroom_post():
                 f.write('')
                 print('text file created')
 
-        elif len(check_posted()) >= 10:
+        elif len(check_posted()) >= 20:
             with open(AllNews.text_file, 'w') as f:
                 f.write('')
                 print('text file was cleared')
