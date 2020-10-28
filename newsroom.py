@@ -17,7 +17,7 @@ def get_newsroom_post():
 
 
     def get_random_newsroom():
-        number = random.randrange(0, len(items))
+        number = random.randrange(0, len(items) - 1)
         print('random number ' + str(number))
         title = items[number].title.text
         image = items[number].description.img['src']
