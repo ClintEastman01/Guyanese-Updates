@@ -45,7 +45,12 @@ def get_newsroom_post():
         if title == '':
             get_random_newsroom()
             # write_selected(title)
-        if 'IPL ' in title or 'football ' in title or 'ODI' in title or 'sport ' in title or 'Sports ' in title:
+        if 'IPL ' in title or \
+                'football ' in title or \
+                'ODI' in title or \
+                'sport ' in title or \
+                'Sports ' in title or \
+                'sport' in title:
             print('skipped article: ' + title)
             get_random_newsroom()
         else:
