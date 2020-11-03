@@ -21,7 +21,7 @@ def get_newsroom_post():
         print('random number ' + str(number))
         title = items[number].title.text
         image = items[number].description.img['src']
-        short_description = items[number].description.text[:100:]
+        short_description = items[number].description.text
         link = items[number].comments.text[:-9]
         date = items[number].pubdate.text[:-6:]
 
@@ -30,7 +30,7 @@ def get_newsroom_post():
                 f.write('')
                 print('text file created')
 
-        elif len(check_posted()) >= 20:
+        elif len(check_posted()) >= 25:
             with open(AllNews.text_file, 'w') as f:
                 f.write('')
                 print('text file was cleared')
@@ -38,13 +38,16 @@ def get_newsroom_post():
         for posted in check_posted():
             # global counter
             if title in posted:
-                print(title[0:30] + '--- old news')
+                print(title[0:30] + '--- old news skipped')
                 title = ''
                 get_random_newsroom()
                 break
         if title == '':
             get_random_newsroom()
             # write_selected(title)
+        if 'IPL ' in title or 'football ' in title or 'ODI' in title or 'sport ' in title or 'Sports ' in title:
+            print('skipped article: ' + title)
+            get_random_newsroom()
         else:
             write_selected(title + '\n')
 

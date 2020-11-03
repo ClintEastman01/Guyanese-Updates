@@ -62,8 +62,8 @@ def choose_random_agency():
 #         return get_newsroom_post()
 
 
-
-check_internet()
+if __name__ == "__main__":
+    check_internet()
 
 
 

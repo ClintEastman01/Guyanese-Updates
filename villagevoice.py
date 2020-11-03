@@ -29,7 +29,7 @@ def get_villagevoice_post():
                 f.write('')
                 print('text file created')
 
-        elif len(check_posted()) >= 20:
+        elif len(check_posted()) >= 25:
             with open(AllNews.text_file, 'w') as f:
                 f.write('')
                 print('text file was cleared')
@@ -37,13 +37,16 @@ def get_villagevoice_post():
         for posted in check_posted():
             # global counter
             if title in posted:
-                print(title[0:30] + '--- old news')
+                print(title[0:30] + '--- old news skipped')
                 title = ''
                 get_random_villlagevoice()
                 break
         if title == '':
             get_random_villlagevoice()
             # write_selected(title)
+        if 'IPL ' in title or 'football ' in title or 'ODI' in title or 'sport ' in title or 'Sports ' in title:
+            print('skipped article: ' + title)
+            get_random_villlagevoice()
         else:
             write_selected(title + '\n')
 
