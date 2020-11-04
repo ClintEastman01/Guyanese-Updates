@@ -50,7 +50,8 @@ def get_newsroom_post():
                 'ODI' in title or \
                 'sport ' in title or \
                 'Sports ' in title or \
-                'sport' in title:
+                'sport' in title or \
+                'Football' in title or \
             print('skipped article: ' + title)
             get_random_newsroom()
         else:
