@@ -44,12 +44,19 @@ def get_villagevoice_post():
         if title == '':
             get_random_villlagevoice()
             # write_selected(title)
-        if 'IPL ' in title or \
-                'football ' in title or \
-                'ODI' in title or \
-                'sport ' in title or \
-                'Sports ' in title or \
-                'sport' in title:
+        if 'ipl ' in title.lower() or \
+                'football' in title.lower() or \
+                'odi ' in title.lower() or \
+                'sport' in title.lower() or \
+                'sports' in title.lower() or \
+                'cricket' in title.lower() or \
+                'basketball' in title.lower() or \
+                'prix' in title.lower() or \
+                'bowling' in title.lower() or \
+                'figure skating' in title.lower() or \
+                'gymnastics' in title.lower() or \
+                'olympics' in title.lower():
+
             print('skipped article: ' + title)
             get_random_villlagevoice()
         else:
