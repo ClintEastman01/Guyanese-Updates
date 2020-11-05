@@ -59,6 +59,7 @@ def get_villagevoice_post():
 
             print('skipped article: ' + title)
             get_random_villlagevoice()
+            break
         else:
             write_selected(title + '\n')
 

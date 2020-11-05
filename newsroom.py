@@ -60,6 +60,7 @@ def get_newsroom_post():
 
             print('skipped article: ' + title)
             get_random_newsroom()
+            break
         else:
             write_selected(title + '\n')
 
