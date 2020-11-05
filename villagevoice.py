@@ -58,8 +58,8 @@ def get_villagevoice_post():
                 'olympics' in title.lower():
 
             print('skipped article: ' + title)
+            write_selected(title + '\n')
             get_random_villlagevoice()
-            break
         else:
             write_selected(title + '\n')
 
