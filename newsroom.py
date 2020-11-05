@@ -64,24 +64,24 @@ def get_newsroom_post():
         else:
             write_selected(title + '\n')
 
-        # r_title = title
-        r_short_d = short_description + '...Read More - ' + link
-        # reddit_message(r_title, r_short_d)
-        random_article['title'] = title
-        random_article['short_description'] = r_short_d
-        random_article['link'] = link
-        random_article['date'] = date
-        random_article['image'] = image
+            # r_title = title
+            r_short_d = short_description + '...Read More - ' + link
+            # reddit_message(r_title, r_short_d)
+            random_article['title'] = title
+            random_article['short_description'] = r_short_d
+            random_article['link'] = link
+            random_article['date'] = date
+            random_article['image'] = image
 
-        print(title)
-        print(short_description)
-        print(link)
-        print(date)
-        print(image)
-        print('\n\n')
-        # time.sleep(3600)
-        # check_internet()
-        return random_article
+            print(title)
+            print(short_description)
+            print(link)
+            print(date)
+            print(image)
+            print('\n\n')
+            # time.sleep(3600)
+            # check_internet()
+            return random_article
 
     return get_random_newsroom()
 

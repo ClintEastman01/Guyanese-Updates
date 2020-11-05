@@ -63,20 +63,20 @@ def get_villagevoice_post():
         else:
             write_selected(title + '\n')
 
-        r_short_d = short_description + '...Read More - ' + link
-        # reddit_message(r_title, r_short_d)
-        random_article['title'] = title
-        random_article['short_description'] = r_short_d
-        random_article['link'] = link
-        random_article['date'] = date
-        random_article['image'] = image
+            r_short_d = short_description + '...Read More - ' + link
+            # reddit_message(r_title, r_short_d)
+            random_article['title'] = title
+            random_article['short_description'] = r_short_d
+            random_article['link'] = link
+            random_article['date'] = date
+            random_article['image'] = image
 
-        print(title)
-        print(short_description)
-        print(link)
-        print(date)
-        print('\n\n')
-        return random_article
+            print(title)
+            print(short_description)
+            print(link)
+            print(date)
+            print('\n\n')
+            return random_article
 
 # get_villlagevoice()
     return get_random_villlagevoice()
