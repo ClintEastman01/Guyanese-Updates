@@ -17,6 +17,7 @@ def get_newsroom_post():
 
 
     def get_random_newsroom():
+        random_article = {}
         number = random.randrange(0, len(items) - 1)
         print('random number ' + str(number))
         title = items[number].title.text
@@ -30,7 +31,7 @@ def get_newsroom_post():
                 f.write('')
                 print('text file created')
 
-        elif len(check_posted()) >= 25:
+        elif len(check_posted()) >= 100:
             with open(AllNews.text_file, 'w') as f:
                 f.write('')
                 print('text file was cleared')

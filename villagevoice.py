@@ -29,7 +29,7 @@ def get_villagevoice_post():
                 f.write('')
                 print('text file created')
 
-        elif len(check_posted()) >= 25:
+        elif len(check_posted()) >= 100:
             with open(AllNews.text_file, 'w') as f:
                 f.write('')
                 print('text file was cleared')
