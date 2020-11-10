@@ -29,10 +29,13 @@ def get_villagevoice_post():
                 f.write('')
                 print('text file created')
 
-        elif len(check_posted()) >= 100:
+        elif len(check_posted()) >= 200:
             with open(AllNews.text_file, 'w') as f:
                 f.write('')
                 print('text file was cleared')
+        else:
+            with open(AllNews.text_file, 'a') as f:
+                print(f'{len(check_posted())} lines in the file')
 
         for posted in check_posted():
             # global counter

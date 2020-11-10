@@ -1,10 +1,11 @@
-
 from news import AllNews
 import requests
 import bs4
 import random
 from file_ops import check_posted, write_selected
 import os.path
+
+
 # import time
 # from urllib.request import urlopen
 
@@ -14,7 +15,6 @@ def get_newsroom_post():
     grab = requests.get(url).text
     soup = bs4.BeautifulSoup(grab, 'lxml')
     items = soup.findAll('item')
-
 
     def get_random_newsroom():
         random_article = {}
@@ -31,10 +31,14 @@ def get_newsroom_post():
                 f.write('')
                 print('text file created')
 
-        elif len(check_posted()) >= 100:
+        elif len(check_posted()) >= 200:
             with open(AllNews.text_file, 'w') as f:
                 f.write('')
                 print('text file was cleared')
+
+        else:
+            with open(AllNews.text_file, 'a') as f:
+                print(f'{len(check_posted())} lines in the file')
 
         for posted in check_posted():
             # global counter
@@ -85,6 +89,5 @@ def get_newsroom_post():
             return random_article
 
     return get_random_newsroom()
-
 
 # check_internet()
