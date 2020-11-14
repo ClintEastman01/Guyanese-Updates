@@ -37,8 +37,7 @@ list_of_words = ['ipl',
                  'boxing',
                  'test match',
                  'pole position',
-                 'diwali',
-                 'guyana'
+                 'diwali'
                  ]
 
 def last_agency(agency):
