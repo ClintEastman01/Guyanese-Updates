@@ -2,12 +2,18 @@ from news import AllNews
 import requests
 import bs4
 import random
-from file_ops import check_posted, write_selected
+from file_ops import check_posted, write_selected, list_of_words, findwholeword
 import os.path
+import time
+# from guyanese_updates import get_villagevoice_post
+
+
 
 
 # import time
 # from urllib.request import urlopen
+
+
 
 def get_newsroom_post():
     random_article = {}
@@ -43,50 +49,49 @@ def get_newsroom_post():
         for posted in check_posted():
             # global counter
             if title in posted:
-                print(title[0:30] + '--- old news skipped')
-                title = ''
-                get_random_newsroom()
-                break
+                if title == '':
+                    print(r'found empty space')
+                else:
+                    print(title[0:50] + '--- old news skipped')
+                    title = ''
+                    try:
+                        get_random_newsroom()
+                    except RecursionError as err:
+                        print('Can\'t find more news on Newsroom - Sleeping for 1hr')
+                        # return 'no news'
+                        time.sleep(3600)
+                        get_random_newsroom()
+                    # break
         if title == '':
             get_random_newsroom()
             # write_selected(title)
-        if 'ipl ' in title.lower() or \
-                'football' in title.lower() or \
-                'odi ' in title.lower() or \
-                'sport' in title.lower() or \
-                'sports' in title.lower() or \
-                'cricket' in title.lower() or \
-                'basketball' in title.lower() or \
-                'prix' in title.lower() or \
-                'bowling' in title.lower() or \
-                'figure skating' in title.lower() or \
-                'gymnastics' in title.lower() or \
-                'olympics' in title.lower():
+        if title != '':
+            for word in list_of_words:
+                if findwholeword(word.lower())(title.lower()):
+                    print('skipped article: ' + title)
+                    # write_selected(title + '\n')
+                    get_random_newsroom()
+                else:
+                    write_selected(title + '\n')
 
-            print('skipped article: ' + title)
-            write_selected(title + '\n')
-            get_random_newsroom()
-        else:
-            write_selected(title + '\n')
+                    # r_title = title
+                    r_short_d = short_description + '...Read More - ' + link
+                    # reddit_message(r_title, r_short_d)
+                    random_article['title'] = title
+                    random_article['short_description'] = r_short_d
+                    random_article['link'] = link
+                    random_article['date'] = date
+                    random_article['image'] = image
 
-            # r_title = title
-            r_short_d = short_description + '...Read More - ' + link
-            # reddit_message(r_title, r_short_d)
-            random_article['title'] = title
-            random_article['short_description'] = r_short_d
-            random_article['link'] = link
-            random_article['date'] = date
-            random_article['image'] = image
-
-            print(title)
-            print(short_description)
-            print(link)
-            print(date)
-            print(image)
-            print('\n\n')
-            # time.sleep(3600)
-            # check_internet()
-            return random_article
+                    print(title)
+                    print(short_description)
+                    print(link)
+                    print(date)
+                    print(image)
+                    print('\n\n')
+                    # time.sleep(3600)
+                    # check_internet()
+                    return random_article
 
     return get_random_newsroom()
 

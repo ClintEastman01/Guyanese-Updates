@@ -53,8 +53,10 @@ def choose_random_agency():
     agency_number = random.randrange(0, 2)
     print(agency_number)
     if agency_number == 0:
+        print('Newsroom')
         return get_newsroom_post()
     elif agency_number == 1:
+        print('Villagevoice')
         return get_villagevoice_post()
 #     elif agency_number == 2:
 #         return get_kaieteur_post()
