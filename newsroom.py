@@ -63,7 +63,7 @@ def get_newsroom_post():
                         print('Can\'t find more news on Newsroom returning to beginning')
                         guyanese_updates.check_internet()
                         break
-                    # break
+
         if title == '':
             get_random_newsroom()
             # write_selected(title)
