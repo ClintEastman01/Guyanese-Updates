@@ -1,14 +1,11 @@
-# from reddit_bot import reddit_message
-# from news import AllNews
+
 import praw
-from newsroom import get_newsroom_post
-from villagevoice import get_villagevoice_post
-#from kaieteur import get_kaieteur_post
-# import requests
-# import bs4
+import newsroom
+import villagevoice
+import kaieteur
+import constants
 import random
-# from file_ops import check_posted, write_selected
-# import os.path
+import os.path
 import time
 from urllib.request import urlopen
 
@@ -46,26 +43,35 @@ def make_reddit_post(article):
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    subreddit.submit(article['title'], selftext=article['short_description'])
+    # subreddit.submit(article['title'], selftext=article['short_description'])
 
 
 def choose_random_agency():
-    agency_number = random.randrange(0, 2)
+    if not os.path.isfile(constants.last_agency_file):
+        with open(constants.last_agency_file, 'w') as f:
+            print('Last agency txt file created')
+
+    agency_number = random.randrange(0, 3)
     print(agency_number)
     if agency_number == 0:
-        print('Newsroom')
-        return get_newsroom_post()
+        if constants.last_agency(constants.newsroom_name):
+            choose_random_agency()
+        else:
+            print('Newsroom')
+            return newsroom.get_newsroom_post()
     elif agency_number == 1:
-        print('Villagevoice')
-        return get_villagevoice_post()
-#     elif agency_number == 2:
-#         return get_kaieteur_post()
-#     else:
-#         return get_newsroom_post()
+        if constants.last_agency(constants.villagevoice_name):
+            choose_random_agency()
+        else:
+            print('Villagevoice')
+            return villagevoice.get_villagevoice_post()
+    else:
+        if constants.last_agency(constants.kaieteurnews_name):
+            choose_random_agency()
+        else:
+            print('Kaieteur news')
+            return kaieteur.get_kaieteur_post()
 
 
 if __name__ == "__main__":
     check_internet()
-
-
-
