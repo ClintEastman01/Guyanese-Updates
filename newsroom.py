@@ -2,7 +2,8 @@
 import requests
 import bs4
 import random
-from constants import check_posted, write_selected, list_of_words, findwholeword, title_file, newsroom_name, last_agency
+from constants import check_posted, write_selected, list_of_words, \
+    findwholeword, title_file, newsroom_name, last_agency, clear_title_file
 import os.path
 import guyanese_updates
 import time
@@ -39,9 +40,8 @@ def get_newsroom_post():
                 print('titles file created')
 
         elif len(check_posted()) >= 200:
-            with open(title_file, 'w') as f:
-                # f.write('')
-                print('text file was cleared')
+            clear_title_file()
+            # print('text file was cleared')
 
         else:
             with open(title_file, 'a') as f:
@@ -51,7 +51,7 @@ def get_newsroom_post():
             # global counter
             if title in posted:
                 if title == '':
-                    print('found empty space or title is empty getting new article')
+                    # print('found empty space or title is empty getting new article')
                     title = ''
                     break
                 else:
@@ -64,8 +64,9 @@ def get_newsroom_post():
                         guyanese_updates.check_internet()
                         break
 
-        if title == '':
-            get_random_newsroom()
+        # if title == '':
+        #     get_random_newsroom()
+        #
             # write_selected(title)
         if title != '':
             for word in list_of_words:

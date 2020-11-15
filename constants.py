@@ -16,6 +16,15 @@ def write_selected(title):
         f.write(title)
         print('stored title')
 
+def clear_title_file():
+    with open(title_file, 'r') as f:
+        all_lines = f.readlines()
+        len_of_lines = len(all_lines)
+        last_10 = all_lines[len_of_lines-10:len_of_lines]
+        with open(title_file, 'w') as f:
+            for line in last_10:
+                f.write(line)
+            print('Deleted all but the last 10 titles')
 
 def check_posted():
     with open(title_file, 'r') as f:

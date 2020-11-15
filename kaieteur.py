@@ -3,7 +3,7 @@ import requests
 import bs4
 import random
 from constants import check_posted, write_selected, findwholeword, list_of_words, title_file, last_agency, \
-    kaieteurnews_name
+    kaieteurnews_name, clear_title_file
 import os.path
 import guyanese_updates
 
@@ -32,15 +32,14 @@ def get_kaieteur_post():
                 print('titles file created')
 
         elif len(check_posted()) >= 200:
-            with open(title_file, 'w') as f:
-                # f.write('')
-                print('text file was cleared')
+            clear_title_file()
+                # print('text file was cleared')
 
         for posted in check_posted():
             # global counter
             if title in posted:
                 if title == '':
-                    print('found empty space or title is empty getting new article')
+                    # print('found empty space or title is empty getting new article')
                     title = ''
                     break
                 else:
