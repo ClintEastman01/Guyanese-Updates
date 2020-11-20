@@ -33,7 +33,7 @@ def get_villagevoice_post():
         if not os.path.isfile(title_file):
             with open(title_file, 'a') as f:
                 f.write('NEWS TITLES')
-                print('titles file created')
+                print('titles file created it didn\'t exist')
 
         elif len(check_posted()) >= 200:
             clear_title_file()
