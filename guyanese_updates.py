@@ -43,7 +43,7 @@ def make_reddit_post(article):
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    subreddit.submit(article['title'], selftext=article['short_description'])
+    # subreddit.submit(article['title'], selftext=article['short_description'])
 
 
 def choose_random_agency():
@@ -60,6 +60,7 @@ def choose_random_agency():
             print('Newsroom')
             return newsroom.get_newsroom_post()
     elif agency_number == 1:
+
         if constants.last_agency(constants.villagevoice_name):
             choose_random_agency()
         else:
