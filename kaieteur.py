@@ -1,4 +1,3 @@
-
 import requests
 import bs4
 import random
@@ -29,11 +28,11 @@ def get_kaieteur_post():
         if not os.path.isfile(title_file):
             with open(title_file, 'a') as f:
                 f.write('NEWS TITLES')
-                print('titles file created')
+                print('titles file created it didn\'t exist')
 
         elif len(check_posted()) >= 200:
             clear_title_file()
-                # print('text file was cleared')
+            # print('text file was cleared')
 
         for posted in check_posted():
             # global counter
