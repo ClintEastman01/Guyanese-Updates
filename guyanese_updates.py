@@ -46,31 +46,35 @@ def make_reddit_post(article):
     subreddit.submit(article['title'], selftext=article['short_description'])
 
 
+
 def choose_random_agency():
     if not os.path.isfile(constants.last_agency_file):
         with open(constants.last_agency_file, 'w') as f:
             print('Last agency txt file created')
 
     agency_number = random.randrange(0, 3)
-    print(agency_number)
+    print(f'Agency select {agency_number}')
     if agency_number == 0:
         if constants.last_agency(constants.newsroom_name):
+            print(f'{constants.newsroom_name} was last chosen, choosing another...')
             choose_random_agency()
         else:
-            print('Newsroom')
+            print('Newsroom chosen')
             return newsroom.get_newsroom_post()
     elif agency_number == 1:
 
         if constants.last_agency(constants.villagevoice_name):
+            print(f'{constants.villagevoice_name} was last chosen, choosing another...')
             choose_random_agency()
         else:
-            print('Villagevoice')
+            print('Villagevoice chosen')
             return villagevoice.get_villagevoice_post()
     else:
         if constants.last_agency(constants.kaieteurnews_name):
+            print(f'{constants.kaieteurnews_name} was last chosen, choosing another...')
             choose_random_agency()
         else:
-            print('Kaieteur news')
+            print('Kaieteur news chosen')
             return kaieteur.get_kaieteur_post()
 
 

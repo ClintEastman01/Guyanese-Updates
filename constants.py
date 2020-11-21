@@ -1,10 +1,10 @@
 # ken
 import re
-
+from datetime import datetime
 newsroom_name = 'newsroom'
 villagevoice_name = 'villagevoice'
 kaieteurnews_name = 'kaieteur'
-
+current_time = str(datetime.now())[:16]
 title_file = 'titles.txt'
 last_agency_file = 'last_agency.txt'
 
@@ -16,7 +16,7 @@ def findwholeword(w):
 def write_selected(title):
     with open(title_file, 'a') as f:
         f.write(title)
-        print('stored title')
+        print('Stored title')
 
 
 def clear_title_file():
@@ -57,7 +57,8 @@ list_of_words = ['ipl',
                  'test match',
                  'pole position',
                  'diwali',
-                 'fifa'
+                 'fifa',
+                 't20'
                  ]
 
 

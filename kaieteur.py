@@ -2,7 +2,7 @@ import requests
 import bs4
 import random
 from constants import check_posted, write_selected, findwholeword, list_of_words, title_file, last_agency, \
-    kaieteurnews_name, clear_title_file
+    kaieteurnews_name, clear_title_file, current_time
 import os.path
 import guyanese_updates
 
@@ -32,36 +32,27 @@ def get_kaieteur_post():
 
         elif len(check_posted()) >= 200:
             clear_title_file()
-            # print('text file was cleared')
 
         for posted in check_posted():
             # global counter
             if title in posted:
-                if title == '':
-                    # print('found empty space or title is empty getting new article')
-                    title = ''
-                    break
-                else:
-                    print(title[0:50] + '--- old news skipped')
-                    title = ''
-                    try:
-                        get_random_kaieteur()
-                    except RecursionError as err:
-                        print('Can\'t find more news on Newsroom returning to beginning')
-                        guyanese_updates.check_internet()
-                        break
-                    # break
-        if title == '':
-            get_random_kaieteur()
-            # write_selected(title)
-        if title != '':
-            for word in list_of_words:
-                if findwholeword(word.lower())(title.lower()):
-                    print(f'Skipped article found word {word} in title -- {title}')
-                    title = ''
+                print(title[0:50] + '--- old news skipped')
+                title = ''
+                try:
                     get_random_kaieteur()
+                except RecursionError as err:
+                    print('Can\'t find more news on Newsroom returning to beginning')
+                    guyanese_updates.check_internet()
+                    break
 
         if title != '':
+            print(f'Checking for restricted words...')
+            for word in list_of_words:
+                if findwholeword(word.lower())(title.lower()) or findwholeword(word.lower())(short_description.lower()):
+                    print(f'Found - {word} - skipping article - {title[:30]}...')
+                    title = ''
+                    get_random_kaieteur()
+                    break
             write_selected(f'\n{title} - {kaieteurnews_name}')
             last_agency(kaieteurnews_name)
             r_short_d = short_description + '...Read More - ' + link
@@ -75,9 +66,8 @@ def get_kaieteur_post():
             print(short_description)
             print(link)
             print(date)
+            print(f'posted to reddit at {current_time}')
             print('\n\n')
-            # article_number = article_number + 1
-            # i will need to return a news model
             return random_article
 
     return get_random_kaieteur()

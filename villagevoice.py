@@ -1,14 +1,11 @@
-
 import requests
 import bs4
 import random
 from constants import check_posted, write_selected, list_of_words, \
-    findwholeword, title_file, villagevoice_name, last_agency, clear_title_file
+    findwholeword, title_file, villagevoice_name, last_agency, clear_title_file, current_time
 import os.path
 import time
 import guyanese_updates
-
-
 
 
 def get_villagevoice_post():
@@ -37,8 +34,6 @@ def get_villagevoice_post():
 
         elif len(check_posted()) >= 200:
             clear_title_file()
-                # f.write('')
-                # print('text file was cleared')
         else:
             with open(title_file, 'a') as f:
                 print(f'{len(check_posted())} lines in the file')
@@ -46,43 +41,39 @@ def get_villagevoice_post():
         for posted in check_posted():
             # global counter
             if title in posted:
-                if title == '':
-                    # print('found empty space or title is empty getting new article')
-                    title = ''
+                print(title[0:50] + '--- old news skipped')
+                title = ''
+                try:
+                    get_random_villlagevoice()
+                except RecursionError as err:
+                    print('Can\'t find more news on VillageVoice returning to beginning')
+                    guyanese_updates.check_internet()
                     break
-                else:
-                    print(title[0:50] + '--- old news skipped')
-                    title = ''
-                    try:
-                        get_random_villlagevoice()
-                    except RecursionError as err:
-                        print('Can\'t find more news on VillageVoice returning to beginning')
-                        guyanese_updates.check_internet()
-                        break
+
         if title != '':
+            print(f'Checking for restricted words...')
             for word in list_of_words:
-                if findwholeword(word.lower())(title.lower()):
-                    print(f'Skipped article found word {word} in title -- {title}')
-                    # write_selected(title + '\n')
+                if findwholeword(word.lower())(title.lower()) or findwholeword(word.lower())(
+                        short_description.lower()):
+                    print(f'Found - {word} - skipping article - {title[:30]}...')
                     title = ''
                     get_random_villlagevoice()
+                    break
+            write_selected(f'\n{title} - {villagevoice_name}')
+            last_agency(villagevoice_name)
+            r_short_d = short_description + '...Read More - ' + link
+            random_article['title'] = title
+            random_article['short_description'] = r_short_d
+            random_article['link'] = link
+            random_article['date'] = date
+            random_article['image'] = image
 
-            if title != '':
-                write_selected(f'\n{title} - {villagevoice_name}')
-                last_agency(villagevoice_name)
-                r_short_d = short_description + '...Read More - ' + link
-                # reddit_message(r_title, r_short_d)
-                random_article['title'] = title
-                random_article['short_description'] = r_short_d
-                random_article['link'] = link
-                random_article['date'] = date
-                random_article['image'] = image
-
-                print(title)
-                print(short_description)
-                print(link)
-                print(date)
-                print('\n\n')
-                return random_article
+            print(title)
+            print(short_description)
+            print(link)
+            print(date)
+            print(f'posted to reddit at {current_time}')
+            print('\n\n')
+            return random_article
 
     return get_random_villlagevoice()
