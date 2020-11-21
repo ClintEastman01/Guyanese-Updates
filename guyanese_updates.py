@@ -43,7 +43,7 @@ def make_reddit_post(article):
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    subreddit.submit(article['title'], selftext=article['short_description'])
+    # subreddit.submit(article['title'], selftext=article['short_description'])
 
 
 
