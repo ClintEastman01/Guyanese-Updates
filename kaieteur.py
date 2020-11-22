@@ -27,8 +27,6 @@ def get_kaieteur_post():
         if database_read().each() is not None:
             print('checking for ols post...')
             for posted in database_read().each():
-                # global counter
-                # print(posted.val()['title'])
                 if title in posted.val()['title']:
                     print(title[0:50] + '--- old news skipped')
                     title = ''

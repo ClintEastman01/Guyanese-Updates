@@ -31,7 +31,6 @@ def check_internet():
 
 
 def make_reddit_post(article):
-    # pass # will get a list for article
     reddit = praw.Reddit(
         client_id='7DgBETTK1e6Xdg',
         client_secret='ULb-y-OqC0-r4t7N5SUHVTxxfNQ',
