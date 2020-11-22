@@ -28,7 +28,8 @@ list_of_words = ['ipl',
                  'pole position',
                  'diwali',
                  'fifa',
-                 't20'
+                 't20',
+                 'restaurant'
                  ]
 
 

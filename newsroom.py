@@ -38,7 +38,7 @@ def get_newsroom_post():
                         guyanese_updates.check_internet()
                         break
 
-        if title != '':
+        if title != '' and short_description != '':
             print(f'Checking for restricted words...')
             for word in list_of_words:
                 if findwholeword(word.lower())(title.lower()) or findwholeword(word.lower())(short_description.lower()):
