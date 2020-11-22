@@ -25,7 +25,7 @@ def get_newsroom_post():
         date = items[number].pubdate.text[:-6:]
 
         if database_read().each() is not None:
-            print('checking for ols post...')
+            print('checking for old post...')
             for posted in database_read().each():
                 if title in posted.val()['title']:
                     print(title[0:50] + '--- old news skipped')

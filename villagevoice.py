@@ -26,7 +26,7 @@ def get_villagevoice_post():
         image = items[number].img['src']
 
         if database_read().each() is not None:
-            print('checking for ols post...')
+            print('checking for old post...')
             for posted in database_read().each():
                 # global counter
                 if title in posted.val()['title']:
