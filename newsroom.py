@@ -1,12 +1,11 @@
-#ken
+# ken
 import requests
 import bs4
 import random
-from constants import check_posted, write_selected, list_of_words, \
-    findwholeword, title_file, newsroom_name, last_agency, clear_title_file, current_time
-import os.path
+from constants import list_of_words, findwholeword, newsroom_name, last_agency, current_time
+from firebase_db import database_read, database_write, c_t_short
 import guyanese_updates
-import time
+
 
 def get_newsroom_post():
     random_article = {}
@@ -25,28 +24,19 @@ def get_newsroom_post():
         link = items[number].comments.text[:-9]
         date = items[number].pubdate.text[:-6:]
 
-        if not os.path.isfile(title_file):
-            with open(title_file, 'a') as f:
-                f.write('NEWS TITLES')
-                print('titles file created it didn\'t exist')
-
-        elif len(check_posted()) >= 200:
-            clear_title_file()
-
-        else:
-            with open(title_file, 'a') as f:
-                print(f'{len(check_posted())} lines in the file\n')
-
-        for posted in check_posted():
-            if title in posted:
-                print(title[0:50] + '--- old news skipped')
-                title = ''
-                try:
-                    get_random_newsroom()
-                except RecursionError as err:
-                    print('Can\'t find more news on Newsroom returning to beginning')
-                    guyanese_updates.check_internet()
-                    break
+        if database_read().each() is not None:
+            print('checking for ols post...')
+            for posted in database_read().each():
+                if title in posted.val()['title']:
+                    print(title[0:50] + '--- old news skipped')
+                    title = ''
+                    try:
+                        get_random_newsroom()
+                        break
+                    except RecursionError as err:
+                        print('Can\'t find more news on Newsroom returning to beginning')
+                        guyanese_updates.check_internet()
+                        break
 
         if title != '':
             print(f'Checking for restricted words...')
@@ -58,7 +48,8 @@ def get_newsroom_post():
                     break
 
             if title != '':
-                write_selected(f'\n{title} - {newsroom_name}')
+                # write_selected(f'\n{title} - {newsroom_name}')
+
                 last_agency(newsroom_name)
                 r_short_d = short_description + '...Read More - ' + link
                 random_article['title'] = title
@@ -66,6 +57,9 @@ def get_newsroom_post():
                 random_article['link'] = link
                 random_article['date'] = date
                 random_article['image'] = image
+                # Write
+                data = {'date': c_t_short, 'sd': r_short_d, 'title': title, 'agency': newsroom_name}
+                database_write(data)
 
                 print(title)
                 print(short_description)

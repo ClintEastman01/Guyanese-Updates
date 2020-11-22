@@ -29,33 +29,16 @@ def login():
     return user['idToken']
 
 
+
 def database_write(data):
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
-    db.child().child(str(f'{c_y} - {c_m}')).child(f'Date - {c_t_short}').child('articles').push(data, login())
+    result = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('articles').push(data, login())
+    return result
 
 
 def database_read():
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
-    titles = db.child().child(str(f'{c_y} - {c_m}')).child(f'Date - {c_t_short}').child('articles').get(login())
+    titles = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('articles').get(login())
     return titles
-
-
-data = {'date': c_t_short, 'sd': short_d, 'title': title, 'agency': agency_name}
-# data2 = {'title': title2, 'sd': short_d, 'date': c_t_short, 'agency': 'Village Voice'}
-
-# for i in range(1, 240):
-# db.child().child(str(f'{c_y} - {c_m}')).child(f'date - {c_d}').child('articles').set(data2)
-# db.child().child(str(f'{c_y} - {c_m}')).child(f'Date - {c_t_short}').child('articles').push(data, login())
-# print(result)
-# db.child().child(str(f'{c_y} - {c_m}')).child(f'date - {c_d}').child('articles').push(data2)
-# db.child().child(str(f'{c_y} - {c_m}')).child('articles').push(data) #good
-# db.child().child(str(f'{c_y} - {c_m}')).child('articles').push(data2)
-# db.child("users").push(data, user['idToken'])
-
-
-
-# titles = db.child().child(str(f'{c_y} - {c_m}')).child(f'Date - {c_t_short}').child('articles').get(user['idToken'])
-# for i in titles.each():
-#     print(i.val()['title'])

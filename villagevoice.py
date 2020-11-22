@@ -1,10 +1,8 @@
 import requests
 import bs4
 import random
-from constants import check_posted, write_selected, list_of_words, \
-    findwholeword, title_file, villagevoice_name, last_agency, clear_title_file, current_time
-import os.path
-import time
+from constants import list_of_words, findwholeword, villagevoice_name, last_agency, current_time
+from firebase_db import database_read, database_write, c_t_short
 import guyanese_updates
 
 
@@ -27,28 +25,20 @@ def get_villagevoice_post():
         date = items[number].find('span', class_="item-metadata posts-date").text.strip()
         image = items[number].img['src']
 
-        if not os.path.isfile(title_file):
-            with open(title_file, 'a') as f:
-                f.write('NEWS TITLES')
-                print('titles file created it didn\'t exist')
-
-        elif len(check_posted()) >= 200:
-            clear_title_file()
-        else:
-            with open(title_file, 'a') as f:
-                print(f'{len(check_posted())} lines in the file')
-
-        for posted in check_posted():
-            # global counter
-            if title in posted:
-                print(title[0:50] + '--- old news skipped')
-                title = ''
-                try:
-                    get_random_villlagevoice()
-                except RecursionError as err:
-                    print('Can\'t find more news on VillageVoice returning to beginning')
-                    guyanese_updates.check_internet()
-                    break
+        if database_read().each() is not None:
+            print('checking for ols post...')
+            for posted in database_read().each():
+                # global counter
+                if title in posted.val()['title']:
+                    print(title[0:50] + '--- old news skipped')
+                    title = ''
+                    try:
+                        get_random_villlagevoice()
+                        break
+                    except RecursionError as err:
+                        print('Can\'t find more news on VillageVoice returning to beginning')
+                        guyanese_updates.check_internet()
+                        break
 
         if title != '':
             print(f'Checking for restricted words...')
@@ -59,7 +49,7 @@ def get_villagevoice_post():
                     title = ''
                     get_random_villlagevoice()
                     break
-            write_selected(f'\n{title} - {villagevoice_name}')
+            # write_selected(f'\n{title} - {villagevoice_name}')
             last_agency(villagevoice_name)
             r_short_d = short_description + '...Read More - ' + link
             random_article['title'] = title
@@ -67,6 +57,9 @@ def get_villagevoice_post():
             random_article['link'] = link
             random_article['date'] = date
             random_article['image'] = image
+            # Write
+            data = {'date': c_t_short, 'sd': r_short_d, 'title': title, 'agency': villagevoice_name}
+            database_write(data)
 
             print(title)
             print(short_description)

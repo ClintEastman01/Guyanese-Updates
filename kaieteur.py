@@ -1,9 +1,8 @@
 import requests
 import bs4
 import random
-from constants import check_posted, write_selected, findwholeword, list_of_words, title_file, last_agency, \
-    kaieteurnews_name, clear_title_file, current_time
-import os.path
+from constants import findwholeword, list_of_words, last_agency, kaieteurnews_name, current_time
+from firebase_db import database_read, database_write, c_t_short
 import guyanese_updates
 
 
@@ -25,25 +24,21 @@ def get_kaieteur_post():
         end_ = items[number].text.find('\nRead')
         short_description = items[number].text[start_:end_:].strip()
 
-        if not os.path.isfile(title_file):
-            with open(title_file, 'a') as f:
-                f.write('NEWS TITLES')
-                print('titles file created it didn\'t exist')
-
-        elif len(check_posted()) >= 200:
-            clear_title_file()
-
-        for posted in check_posted():
-            # global counter
-            if title in posted:
-                print(title[0:50] + '--- old news skipped')
-                title = ''
-                try:
-                    get_random_kaieteur()
-                except RecursionError as err:
-                    print('Can\'t find more news on Newsroom returning to beginning')
-                    guyanese_updates.check_internet()
-                    break
+        if database_read().each() is not None:
+            print('checking for ols post...')
+            for posted in database_read().each():
+                # global counter
+                # print(posted.val()['title'])
+                if title in posted.val()['title']:
+                    print(title[0:50] + '--- old news skipped')
+                    title = ''
+                    try:
+                        get_random_kaieteur()
+                        break
+                    except RecursionError as err:
+                        print('Can\'t find more news on Newsroom returning to beginning')
+                        guyanese_updates.check_internet()
+                        break
 
         if title != '':
             print(f'Checking for restricted words...')
@@ -53,7 +48,7 @@ def get_kaieteur_post():
                     title = ''
                     get_random_kaieteur()
                     break
-            write_selected(f'\n{title} - {kaieteurnews_name}')
+            # write_selected(f'\n{title} - {kaieteurnews_name}')
             last_agency(kaieteurnews_name)
             r_short_d = short_description + '...Read More - ' + link
             # reddit_message(r_title, r_short_d)
@@ -62,6 +57,10 @@ def get_kaieteur_post():
             random_article['link'] = link
             random_article['date'] = date
             random_article['image'] = image
+            # Write
+            data = {'date': c_t_short, 'sd': r_short_d, 'title': title, 'agency': kaieteurnews_name}
+            database_write(data)
+
             print(title)
             print(short_description)
             print(link)
