@@ -2,9 +2,9 @@ import requests
 import bs4
 import random
 from constants import findwholeword, list_of_words, last_agency, kaieteurnews_name, current_time
-from firebase_db import database_read, database_write, c_t_short
+from firebase_db import database_read, database_write
 import guyanese_updates
-
+import firebase_db
 
 def get_kaieteur_post():
     random_article = {}
@@ -56,7 +56,7 @@ def get_kaieteur_post():
             random_article['date'] = date
             random_article['image'] = image
             # Write
-            data = {'date': c_t_short, 'sd': r_short_d, 'title': title, 'agency': kaieteurnews_name}
+            data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': kaieteurnews_name}
             database_write(data)
 
             print(title)
