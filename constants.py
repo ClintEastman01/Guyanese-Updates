@@ -1,6 +1,7 @@
 # ken
 import re
 from datetime import datetime
+import os
 newsroom_name = 'newsroom'
 villagevoice_name = 'villagevoice'
 kaieteurnews_name = 'kaieteur'
@@ -42,3 +43,8 @@ def last_agency(agency):
             with open(last_agency_file, 'w') as f:
                 f.write(agency)
         return False
+
+def check_last_agency_exist():
+    if not os.path.isfile(last_agency_file):
+        with open(last_agency_file, 'w') as f:
+            print('Last agency txt file created')

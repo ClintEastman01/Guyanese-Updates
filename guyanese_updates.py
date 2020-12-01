@@ -1,11 +1,10 @@
-#ken
+from secrets import Secrets
 import praw
 import newsroom
 import villagevoice
 import kaieteur
 import constants
 import random
-import os.path
 import time
 from urllib.request import urlopen
 
@@ -32,25 +31,20 @@ def check_internet():
 
 def make_reddit_post(article):
     reddit = praw.Reddit(
-        client_id='7DgBETTK1e6Xdg',
-        client_secret='ULb-y-OqC0-r4t7N5SUHVTxxfNQ',
-        user_agent="GuyanaNews Agency",
-        username='guyanaupdates',
-        password='Justapassword1'
+        client_id=Secrets.client_id,
+        client_secret=Secrets.client_secret,
+        user_agent=Secrets.user_agent,
+        username=Secrets.username,
+        password=Secrets.password
     )
 
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    subreddit.submit(article['title'], selftext=article['short_description'])
-
+    # subreddit.submit(article['title'], selftext=article['short_description'])
 
 
 def choose_random_agency():
-    if not os.path.isfile(constants.last_agency_file):
-        with open(constants.last_agency_file, 'w') as f:
-            print('Last agency txt file created')
-
     agency_number = random.randrange(0, 3)
     print(f'Agency select {agency_number}')
     if agency_number == 0:
@@ -74,7 +68,7 @@ def choose_random_agency():
             choose_random_agency()
         else:
             print('Kaieteur news chosen')
-            return kaieteur.get_kaieteur_post()
+            return kaieteur.get_kaieteur_posts()
 
 
 if __name__ == "__main__":

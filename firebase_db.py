@@ -1,5 +1,6 @@
 import pyrebase
 from datetime import datetime
+from secrets import Secrets
 
 c_t = datetime.now()
 c_t_short = str(c_t.strftime("%c"))
@@ -8,26 +9,23 @@ c_y = str(c_t.year)
 c_d = str(c_t.strftime('%d'))
 
 firebaseConfig = {
-    'apiKey': "AIzaSyDsRPt73z0Or6cnOkk9rQ6c9QvXXnOZHdg",
-    'authDomain': "guyaneseupdates.firebaseapp.com",
-    'databaseURL': "https://guyaneseupdates.firebaseio.com",
-    'projectId': "guyaneseupdates",
-    'storageBucket': "guyaneseupdates.appspot.com",
-    'messagingSenderId': "641260725294",
-    'appId': "1:641260725294:web:41ae9723b7313771f32bbf",
-    'admin': "true"
+    'apiKey': Secrets.apiKey,
+    'authDomain': Secrets.authDomain,
+    'databaseURL': Secrets.databaseURL,
+    'projectId': Secrets.projectId,
+    'storageBucket': Secrets.storageBucket,
+    'messagingSenderId': Secrets.messagingSenderId,
+    'appId': Secrets.appId,
+    'admin': Secrets.admin
 }
 
 
 def login():
     firebase = pyrebase.initialize_app(firebaseConfig)
     auth = firebase.auth()
-    email = 'admin@mail.com'
-    password = 'password1'
-    user = auth.sign_in_with_email_and_password(email, password)
+    user = auth.sign_in_with_email_and_password(Secrets.firebase_email, Secrets.firebase_password)
     user = auth.refresh(user['refreshToken'])
     return user['idToken']
-
 
 
 def database_write(data):

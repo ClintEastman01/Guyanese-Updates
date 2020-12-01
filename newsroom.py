@@ -7,6 +7,7 @@ from firebase_db import database_read, database_write
 import guyanese_updates
 import firebase_db
 
+
 def get_newsroom_post():
     random_article = {}
     url = 'https://newsroom.gy/feed/'
