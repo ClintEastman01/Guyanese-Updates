@@ -6,6 +6,7 @@ from constants import list_of_words, findwholeword, newsroom_name, last_agency, 
 from firebase_db import database_read, database_write
 import guyanese_updates
 import firebase_db
+import check_percentage
 
 
 def get_newsroom_post():
@@ -26,9 +27,11 @@ def get_newsroom_post():
         date = items[number].pubdate.text[:-6:]
 
         if database_read().each() is not None:
+            # Check similar title and description
             print('checking for old post...')
+            print(f'Current title - {title}')
             for posted in database_read().each():
-                if title in posted.val()['title']:
+                if check_percentage.check_match_percent(title, posted.val()['title']):
                     print(title[0:50] + '--- old news skipped')
                     title = ''
                     try:
@@ -73,4 +76,7 @@ def get_newsroom_post():
 
     return get_random_newsroom()
 
+
+if __name__ == '__main__':
+    get_newsroom_post()
 # check_internet()

@@ -6,6 +6,7 @@ from datetime import datetime
 from firebase_db import database_read, database_write
 import guyanese_updates
 import firebase_db
+import check_percentage
 
 def get_villagevoice_post():
     random_article = {}
@@ -30,7 +31,7 @@ def get_villagevoice_post():
             print('checking for old post...')
             for posted in database_read().each():
                 # global counter
-                if title in posted.val()['title']:
+                if check_percentage.check_match_percent(title, posted.val()['title']):
                     print(title[0:50] + '--- old news skipped')
                     title = ''
                     try:
@@ -69,5 +70,8 @@ def get_villagevoice_post():
             print(f'posted to reddit at {current_time}')
             print('\n\n')
             return random_article
-
     return get_random_villlagevoice()
+
+
+if __name__ == '__main__':
+    get_villagevoice_post()
