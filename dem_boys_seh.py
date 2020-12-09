@@ -32,7 +32,7 @@ def get_latest_seh(url):
     article = {
         'title': title,
         'date': posted_date,
-        'body': get_all_p[2].text[16:]
+        'short_description': f"{get_all_p[2].text[16:]} - Dem Boys Seh From Kaieteur News {posted_date}"
     }
     return article
 
