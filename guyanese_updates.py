@@ -43,7 +43,9 @@ def make_reddit_post(article):
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    subreddit.submit(article['title'], selftext=article['short_description'])
+   subreddit.submit(article['title'], selftext=article['short_description'])
+
+
 def choose_random_agency():
     # Will prioritize dem boys seh
     # see if dem boys seh title is the same as the one available
@@ -53,10 +55,13 @@ def choose_random_agency():
     seh_title = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))['title']
     if constants.last_seh(seh_title):
         print(f'Dem Boys seh already posted moving to regular news')
+        return choose_random_agency_ext()
     else:
         print('Dem Boys Seh Chosen')
         return dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
 
+
+def choose_random_agency_ext():
     agency_number = random.randrange(0, 2)
     print(f'Agency select {agency_number}')
     if agency_number == 0:
