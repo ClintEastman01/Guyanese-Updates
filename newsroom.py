@@ -17,7 +17,7 @@ def get_newsroom_post():
     items = soup.findAll('item')
 
     def get_random_newsroom():
-        random_article = {}
+        random_article.clear()
         number = random.randrange(0, len(items))
         print('random number ' + str(number))
         title = items[number].title.text
@@ -72,6 +72,12 @@ def get_newsroom_post():
                 print(image)
                 print(f'posted to reddit at {current_time}')
                 print('\n\n')
+                title = ""
+                short_description = ""
+                r_short_d = ""
+                link = ""
+                date = ""
+                image = ""
                 return random_article
 
     return get_random_newsroom()

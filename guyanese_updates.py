@@ -1,3 +1,4 @@
+import check_percentage
 from secrets import Secrets
 import praw
 import newsroom
@@ -7,6 +8,9 @@ import random
 import time
 import dem_boys_seh
 from urllib.request import urlopen
+from firebase_db import database_read_seh, database_write_seh
+from constants import list_of_words, findwholeword, newsroom_name, last_agency, current_time
+import firebase_db
 
 
 def internet_on():
@@ -19,7 +23,7 @@ def internet_on():
 
 def check_internet():
     constants.check_last_agency_exist()
-    constants.check_last_demboysseh_exist()
+    # constants.check_last_demboysseh_exist()
     if internet_on():
         print('You have internet')
         make_reddit_post(choose_random_agency())
@@ -39,12 +43,11 @@ def make_reddit_post(article):
         username=Secrets.username,
         password=Secrets.password
     )
-
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
     subreddit.submit(article['title'], selftext=article['short_description'])
-
+    article.clear()
 
 def choose_random_agency():
     # Will prioritize dem boys seh
@@ -52,13 +55,37 @@ def choose_random_agency():
     # if not then post dem boys seh instead of news and write this title in dem boys seh file
     # if its been posted move forward as before
     # for simplicity sake i will make a new file
-    seh_title = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))['title']
-    if constants.last_seh(seh_title):
-        print(f'Dem Boys seh already posted moving to regular news')
-        return choose_random_agency_ext()
+    seh_article = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
+    if database_read_seh().each() is not None:
+        # Check similar title
+        print('checking Dem Boys seh titles')
+        print(f'Current title - {seh_article["title"]}')
+        for posted in database_read_seh().each():
+            if check_percentage.check_match_percent(seh_article["title"], posted.val()['title']):
+                print(seh_article["title"][0:50] + '--- old Dem boys seh skipped going to news')
+                seh_article.clear()
+                try:
+                    choose_random_agency_ext()
+                    break
+                except RecursionError as err:
+                    print('Can\'t find more news on Newsroom returning to beginning')
+                    check_internet()
+                    break
+
+    # if constants.last_seh(seh_article["title"]):  # I need to use the database to compare
+    #     print(f'Dem Boys seh already posted moving to regular news')
+    #     seh_article.clear()
+    #     return choose_random_agency_ext()
+            else:
+                data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
+                database_write_seh(data)
+                print('Dem Boys Seh Chosen, written to database')
+                return seh_article
     else:
-        print('Dem Boys Seh Chosen')
-        return dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
+        data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
+        database_write_seh(data)
+        print('Dem Boys Seh Chosen - Posted to reddit - written to database - sleep started')
+        return seh_article
 
 
 def choose_random_agency_ext():
@@ -79,7 +106,7 @@ def choose_random_agency_ext():
             # choose_random_agency()
             return newsroom.get_newsroom_post()
         else:
-            print('Villagevoice chosen')
+            print('Village voice chosen')
             return villagevoice.get_villagevoice_post()
     # else:
     #     if constants.last_agency(constants.kaieteurnews_name):

@@ -40,3 +40,17 @@ def database_read():
     db = firebase.database()
     titles = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('articles').get(login())
     return titles
+
+
+def database_write_seh(data):
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    db = firebase.database()
+    result = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('dem boys seh').push(data, login())
+    return result
+
+
+def database_read_seh():
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    db = firebase.database()
+    titles = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('dem boys seh').get(login())
+    return titles

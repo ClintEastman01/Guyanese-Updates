@@ -19,7 +19,7 @@ def get_latest_link(url):
 
 
 def get_latest_seh(url):
-    # article = {}
+    article = {}
     # global article
     r = requests.get(url)
     # r.html.render(timeout=0)
@@ -32,8 +32,9 @@ def get_latest_seh(url):
     article = {
         'title': title,
         'date': posted_date,
-        'short_description': f"{get_all_p[2].text} - Dem Boys Seh From Kaieteur News {posted_date}"
+        'short_description': f"{get_all_p[2].text} - Dem Boys Seh From Kaieteur News {posted_date} - {url}"
     }
+
     return article
 
 
