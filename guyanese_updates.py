@@ -56,7 +56,9 @@ def choose_random_agency():
     # if its been posted move forward as before
     # for simplicity sake i will make a new file
     seh_article = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
+
     if database_read_seh().each() is not None:
+        print(database_read_seh().each())
         # Check similar title
         print('checking Dem Boys seh titles')
         print(f'Current title - {seh_article["title"]}')
@@ -65,23 +67,22 @@ def choose_random_agency():
             if check_percentage.check_match_percent(seh_article["title"], posted.val()['title']):
                 print(seh_article["title"][0:50] + '--- old Dem boys seh skipped going to news')
                 seh_article["title"] = ""
-                choose_random_agency_ext()
-                break
+                return choose_random_agency_ext()
 
             # if constants.last_seh(seh_article["title"]):  # I need to use the database to compare
             #     print(f'Dem Boys seh already posted moving to regular news')
             #     seh_article.clear()
             #     return choose_random_agency_ext()
-        if seh_article["title"] != "":
-            data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
-            database_write_seh(data)
-            print('Dem Boys Seh Chosen, written to database')
-            return seh_article
-            # else:
-            #     data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
-            #     database_write_seh(data)
-            #     print('Dem Boys Seh Chosen - Posted to reddit - written to database - sleep started')
-            #     return seh_article
+    if seh_article["title"] != "":
+        data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
+        database_write_seh(data)
+        print('Dem Boys Seh Chosen, written to database')
+        return seh_article
+        # else:
+        #     data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
+        #     database_write_seh(data)
+        #     print('Dem Boys Seh Chosen - Posted to reddit - written to database - sleep started')
+        #     return seh_article
 
 
 def choose_random_agency_ext():
