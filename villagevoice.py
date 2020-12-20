@@ -68,7 +68,7 @@ def get_villagevoice_post():
             print(link)
             print(date)
             print(f'posted to reddit at {current_time}')
-            print('\n\n')
+
             return random_article
 
         if title == '' or short_description == '':

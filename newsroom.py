@@ -65,7 +65,7 @@ def get_newsroom_post():
             print(date)
             print(image)
             print(f'posted to reddit at {current_time}')
-            print('\n\n')
+
             return random_article
 
         if title == '' or short_description == '':

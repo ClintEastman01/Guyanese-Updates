@@ -26,6 +26,7 @@ def check_internet():
         print('You have internet')
         make_reddit_post(choose_random_agency())
         print("About to sleep for 3hrs... goodnight")
+        print('\n\n')
         time.sleep(10800)
         check_internet()
     else:
@@ -47,7 +48,6 @@ def make_reddit_post(article):
     reddit.validate_on_submit = True
 
     subreddit.submit(article['title'], selftext=article['short_description'])
-    print("Posted to reddit")
 
 
 def choose_random_agency():
@@ -103,14 +103,6 @@ def choose_random_agency_ext():
         else:
             print('Village voice chosen')
             return villagevoice.get_villagevoice_post()
-    # else:
-    #     if constants.last_agency(constants.kaieteurnews_name):
-    #         print(f'{constants.kaieteurnews_name} was last chosen, choosing another...')
-    #         choose_random_agency()
-    #     else:
-    #         print('Kaieteur news chosen')
-    #         return kaieteur.get_kaieteur_posts()
-
 
 if __name__ == "__main__":
     check_internet()
