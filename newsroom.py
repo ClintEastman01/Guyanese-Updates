@@ -19,7 +19,7 @@ def get_newsroom_post():
     def get_random_newsroom():
         random_article.clear()
         number = random.randrange(0, len(items))
-        print('random number ' + str(number))
+        print('random newsroom article number ' + str(number))
         title = items[number].title.text
         image = items[number].description.img['src']
         short_description = items[number].description.text
@@ -33,52 +33,43 @@ def get_newsroom_post():
             for posted in database_read().each():
                 if check_percentage.check_match_percent(title, posted.val()['title']):
                     print(title[0:50] + '--- old news skipped')
-                    title = ''
                     try:
-                        get_random_newsroom()
-                        break
+                        print("trying to get another article from Newsroom")
+                        return get_random_newsroom()
                     except RecursionError as err:
                         print('Can\'t find more news on Newsroom returning to beginning')
-                        guyanese_updates.check_internet()
-                        break
+                        return guyanese_updates.check_internet()
 
         if title != '' and short_description != '':
-            print(f'Checking for restricted words...')
+            print(f'Have title and description, checking for restricted words...')
             for word in list_of_words:
                 if findwholeword(word.lower())(title.lower()) or findwholeword(word.lower())(short_description.lower()):
                     print(f'Found - {word} - skipping article - {title[:30]}...')
-                    title = ''
-                    get_random_newsroom()
-                    break
+                    return get_random_newsroom()
+                else:
+                    print("Passed all checks :)")
+                    last_agency(newsroom_name)
+                    r_short_d = short_description + '...Read More - ' + link
+                    random_article['title'] = title
+                    random_article['short_description'] = r_short_d
+                    random_article['link'] = link
+                    random_article['date'] = date
+                    random_article['image'] = image
+                    # Write
+                    data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': newsroom_name}
+                    database_write(data)
+                    print("wrote to firebase")
+                    print(title)
+                    print(short_description)
+                    print(link)
+                    print(date)
+                    print(image)
+                    print(f'posted to reddit at {current_time}')
+                    print('\n\n')
+                    return random_article
 
-            if title != '':
-                # write_selected(f'\n{title} - {newsroom_name}')
-
-                last_agency(newsroom_name)
-                r_short_d = short_description + '...Read More - ' + link
-                random_article['title'] = title
-                random_article['short_description'] = r_short_d
-                random_article['link'] = link
-                random_article['date'] = date
-                random_article['image'] = image
-                # Write
-                data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': newsroom_name}
-                database_write(data)
-
-                print(title)
-                print(short_description)
-                print(link)
-                print(date)
-                print(image)
-                print(f'posted to reddit at {current_time}')
-                print('\n\n')
-                title = ""
-                short_description = ""
-                r_short_d = ""
-                link = ""
-                date = ""
-                image = ""
-                return random_article
+        if title == '' or short_description == '':
+            return guyanese_updates.check_internet()
 
     return get_random_newsroom()
 

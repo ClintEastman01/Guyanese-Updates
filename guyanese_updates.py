@@ -27,10 +27,12 @@ def check_internet():
     if internet_on():
         print('You have internet')
         make_reddit_post(choose_random_agency())
+        print("About to sleep for 3hrs... goodnight")
         time.sleep(10800)
         check_internet()
     else:
         while True:
+            print("No internet :(, will check again in 100 seconds")
             time.sleep(100)
             check_internet()
 
@@ -47,6 +49,7 @@ def make_reddit_post(article):
     reddit.validate_on_submit = True
 
     subreddit.submit(article['title'], selftext=article['short_description'])
+    print("Posted to reddit")
 
 
 def choose_random_agency():
@@ -58,31 +61,29 @@ def choose_random_agency():
     seh_article = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
 
     if database_read_seh().each() is not None:
-        print(database_read_seh().each())
         # Check similar title
         print('checking Dem Boys seh titles')
         print(f'Current title - {seh_article["title"]}')
         for posted in database_read_seh().each():
-            print(f"from database -- -- -- - {posted.val()}")
+            print(f"from database -- -- -- - {posted.val()['title']}")
             if check_percentage.check_match_percent(seh_article["title"], posted.val()['title']):
                 print(seh_article["title"][0:50] + '--- old Dem boys seh skipped going to news')
                 seh_article["title"] = ""
                 return choose_random_agency_ext()
 
-            # if constants.last_seh(seh_article["title"]):  # I need to use the database to compare
-            #     print(f'Dem Boys seh already posted moving to regular news')
-            #     seh_article.clear()
-            #     return choose_random_agency_ext()
-    if seh_article["title"] != "":
+            else:
+                data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
+                database_write_seh(data)
+                print('Dem Boys Seh Chosen, written to database')
+                return seh_article
+
+    elif seh_article is None or seh_article["title"] == "":
+        return choose_random_agency_ext()
+    else:
         data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
         database_write_seh(data)
         print('Dem Boys Seh Chosen, written to database')
         return seh_article
-        # else:
-        #     data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
-        #     database_write_seh(data)
-        #     print('Dem Boys Seh Chosen - Posted to reddit - written to database - sleep started')
-        #     return seh_article
 
 
 def choose_random_agency_ext():

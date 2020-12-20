@@ -21,7 +21,7 @@ def get_villagevoice_post():
     def get_random_villagevoice():
         random_article.clear()
         number = random.randrange(0, len(items))
-        print('random number ' + str(number))
+        print('random villagevoice article number ' + str(number))
         link = items[number].a['href']
         short_description = items[number].p.text[:-4:].strip()
         title = items[number].h3.text
@@ -35,51 +35,44 @@ def get_villagevoice_post():
                 # global counter
                 if check_percentage.check_match_percent(title, posted.val()['title']):
                     print(title[0:50] + '--- old news skipped')
-                    title = ''
                     try:
-                        get_random_villagevoice()
-                        break
+                        print("Trying to get another VillageVoice article")
+                        return get_random_villagevoice()
                     except RecursionError as err:
                         print('Can\'t find more news on VillageVoice returning to beginning')
-                        guyanese_updates.check_internet()
-                        break
+                        return guyanese_updates.check_internet()
 
         if title != '' and short_description != '':
-            print(f'Checking for restricted words...')
+            print(f'Got title and description, checking for restricted words...')
             for word in list_of_words:
                 if findwholeword(word.lower())(title.lower()) or findwholeword(word.lower())(
                         short_description.lower()):
                     print(f'Found - {word} - skipping article - {title[:30]}...')
-                    title = ''
-
-                    get_random_villagevoice()
-                    break
+                    return get_random_villagevoice()
             # write_selected(f'\n{title} - {villagevoice_name}')
-            last_agency(villagevoice_name)
-            r_short_d = short_description + '...Read More - ' + link
-            random_article['title'] = title
-            random_article['short_description'] = r_short_d
-            random_article['link'] = link
-            random_article['date'] = date
-            random_article['image'] = image
-            # Write
-            data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': villagevoice_name}
-            database_write(data)
+                else:
+                    print("passed all checks :)")
+                    last_agency(villagevoice_name)
+                    r_short_d = short_description + '...Read More - ' + link
+                    random_article['title'] = title
+                    random_article['short_description'] = r_short_d
+                    random_article['link'] = link
+                    random_article['date'] = date
+                    random_article['image'] = image
+                    # Write
+                    data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': villagevoice_name}
+                    database_write(data)
+                    print("wrote to database")
+                    print(title)
+                    print(short_description)
+                    print(link)
+                    print(date)
+                    print(f'posted to reddit at {current_time}')
+                    print('\n\n')
+                    return random_article
 
-            print(title)
-            print(short_description)
-            print(link)
-            print(date)
-            print(f'posted to reddit at {current_time}')
-            print('\n\n')
-            title = ""
-            short_description = ""
-            r_short_d = ""
-            link = ""
-            date = ""
-            image = ""
-
-            return random_article
+        if title == '' or short_description == '':
+            return guyanese_updates.check_internet()
 
     return get_random_villagevoice()
 
