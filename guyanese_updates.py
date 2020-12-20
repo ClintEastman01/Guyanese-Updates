@@ -8,8 +8,7 @@ import random
 import time
 import dem_boys_seh
 from urllib.request import urlopen
-from firebase_db import database_read_seh, database_write_seh, database_read_simplewords
-from constants import list_of_words, findwholeword, newsroom_name, last_agency, current_time
+from firebase_db import database_read_seh, database_write_seh
 import firebase_db
 
 def internet_on():
