@@ -1,3 +1,5 @@
+
+from firebase_db import database_read_simplewords
 sentence1 = "input('sentence1 > ')"
 sentence2 = "input('sentence2 > ')"
 
@@ -13,7 +15,7 @@ def get_words():
 
 def remove_simple_words(words):
     list_of_simple_words = get_words()
-    for simple_word in list_of_simple_words:
+    for simple_word in str(database_read_simplewords()).split():
         for word in words:
             if word.lower() == simple_word.lower():
                 words.remove(word)

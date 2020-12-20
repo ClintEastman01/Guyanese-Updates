@@ -8,9 +8,14 @@ import random
 import time
 import dem_boys_seh
 from urllib.request import urlopen
-from firebase_db import database_read_seh, database_write_seh
+from firebase_db import database_read_seh, database_write_seh, database_read_simplewords
 from constants import list_of_words, findwholeword, newsroom_name, last_agency, current_time
 import firebase_db
+import os
+
+
+def cls():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def internet_on():
@@ -28,6 +33,8 @@ def check_internet():
         print('You have internet')
         make_reddit_post(choose_random_agency())
         print("About to sleep for 3hrs... goodnight")
+        time.sleep(20)
+        cls()
         time.sleep(10800)
         check_internet()
     else:
@@ -48,8 +55,8 @@ def make_reddit_post(article):
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    subreddit.submit(article['title'], selftext=article['short_description'])
-    print("Posted to reddit")
+    # subreddit.submit(article['title'], selftext=article['short_description'])
+    # print("Posted to reddit")
 
 
 def choose_random_agency():
@@ -71,11 +78,10 @@ def choose_random_agency():
                 seh_article["title"] = ""
                 return choose_random_agency_ext()
 
-            else:
-                data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
-                database_write_seh(data)
-                print('Dem Boys Seh Chosen, written to database')
-                return seh_article
+        data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
+        database_write_seh(data)
+        print('Dem Boys Seh Chosen, written to database')
+        return seh_article
 
     elif seh_article is None or seh_article["title"] == "":
         return choose_random_agency_ext()

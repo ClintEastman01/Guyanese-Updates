@@ -2,7 +2,7 @@ import requests
 import bs4
 import random
 from constants import list_of_words, findwholeword, villagevoice_name, last_agency, current_time
-from firebase_db import database_read, database_write
+from firebase_db import database_read, database_write, database_read_restrictedwords
 import guyanese_updates
 import firebase_db
 import check_percentage
@@ -44,32 +44,32 @@ def get_villagevoice_post():
 
         if title != '' and short_description != '':
             print(f'Got title and description, checking for restricted words...')
-            for word in list_of_words:
+            restricted_words_list = str(database_read_restrictedwords().val()).split()
+            for word in restricted_words_list:
                 if findwholeword(word.lower())(title.lower()) or findwholeword(word.lower())(
                         short_description.lower()):
                     print(f'Found - {word} - skipping article - {title[:30]}...')
                     return get_random_villagevoice()
             # write_selected(f'\n{title} - {villagevoice_name}')
-                else:
-                    print("passed all checks :)")
-                    last_agency(villagevoice_name)
-                    r_short_d = short_description + '...Read More - ' + link
-                    random_article['title'] = title
-                    random_article['short_description'] = r_short_d
-                    random_article['link'] = link
-                    random_article['date'] = date
-                    random_article['image'] = image
-                    # Write
-                    data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': villagevoice_name}
-                    database_write(data)
-                    print("wrote to database")
-                    print(title)
-                    print(short_description)
-                    print(link)
-                    print(date)
-                    print(f'posted to reddit at {current_time}')
-                    print('\n\n')
-                    return random_article
+            print("passed all checks :)")
+            last_agency(villagevoice_name)
+            r_short_d = short_description + '...Read More - ' + link
+            random_article['title'] = title
+            random_article['short_description'] = r_short_d
+            random_article['link'] = link
+            random_article['date'] = date
+            random_article['image'] = image
+            # Write
+            data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': villagevoice_name}
+            # database_write(data)
+            print("wrote to database")
+            print(title)
+            print(short_description)
+            print(link)
+            print(date)
+            print(f'posted to reddit at {current_time}')
+            print('\n\n')
+            return random_article
 
         if title == '' or short_description == '':
             return guyanese_updates.check_internet()

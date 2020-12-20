@@ -54,3 +54,17 @@ def database_read_seh():
     db = firebase.database()
     titles = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('dem boys seh').get(login())
     return titles
+
+
+def database_read_simplewords():
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    db = firebase.database()
+    words = db.child('simplewords').get(login())
+    return words
+
+
+def database_read_restrictedwords():
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    db = firebase.database()
+    words = db.child('restrictedwords').get(login())
+    return words
