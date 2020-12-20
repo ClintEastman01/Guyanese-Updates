@@ -1,16 +1,10 @@
-
 from firebase_db import database_read_simplewords
+
 sentence1 = "input('sentence1 > ')"
 sentence2 = "input('sentence2 > ')"
 
 match_percentage = 0
 percent_of_words_matched = 0
-
-
-def get_words():
-    with open('simple_words.txt', 'r') as f:
-        words = f.read()
-        return words.split()
 
 
 def remove_simple_words(words):
@@ -52,8 +46,10 @@ def check_match_percent(s1, s2):
         match_percentage = 0
         return True
     else:
+        match_percentage = 0
         # print('Most likely not a match')
         return False
+
 
 if __name__ == '__main__':
     check_match_percent(sentence1, sentence2)  # This runs the script and takes 2 sentences when its called.

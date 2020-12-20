@@ -11,12 +11,6 @@ from urllib.request import urlopen
 from firebase_db import database_read_seh, database_write_seh, database_read_simplewords
 from constants import list_of_words, findwholeword, newsroom_name, last_agency, current_time
 import firebase_db
-import os
-
-
-def cls():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
 
 def internet_on():
     try:
@@ -33,8 +27,6 @@ def check_internet():
         print('You have internet')
         make_reddit_post(choose_random_agency())
         print("About to sleep for 3hrs... goodnight")
-        time.sleep(20)
-        cls()
         time.sleep(10800)
         check_internet()
     else:
@@ -55,8 +47,8 @@ def make_reddit_post(article):
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    # subreddit.submit(article['title'], selftext=article['short_description'])
-    # print("Posted to reddit")
+    subreddit.submit(article['title'], selftext=article['short_description'])
+    print("Posted to reddit")
 
 
 def choose_random_agency():

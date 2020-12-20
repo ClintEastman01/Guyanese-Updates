@@ -1,7 +1,7 @@
 import requests
 import bs4
 import random
-from constants import list_of_words, findwholeword, villagevoice_name, last_agency, current_time
+from constants import findwholeword, villagevoice_name, last_agency, current_time
 from firebase_db import database_read, database_write, database_read_restrictedwords
 import guyanese_updates
 import firebase_db
@@ -61,7 +61,7 @@ def get_villagevoice_post():
             random_article['image'] = image
             # Write
             data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': villagevoice_name}
-            # database_write(data)
+            database_write(data)
             print("wrote to database")
             print(title)
             print(short_description)

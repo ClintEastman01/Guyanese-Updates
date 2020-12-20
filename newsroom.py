@@ -2,7 +2,7 @@
 import requests
 import bs4
 import random
-from constants import list_of_words, findwholeword, newsroom_name, last_agency, current_time
+from constants import findwholeword, newsroom_name, last_agency, current_time
 from firebase_db import database_read, database_write, database_read_restrictedwords
 import guyanese_updates
 import firebase_db
@@ -57,7 +57,7 @@ def get_newsroom_post():
             random_article['image'] = image
             # Write
             data = {'date': firebase_db.c_t_short, 'sd': r_short_d, 'title': title, 'agency': newsroom_name}
-            # database_write(data)
+            database_write(data)
             print("wrote to firebase")
             print(title)
             print(short_description)
