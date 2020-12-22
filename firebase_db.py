@@ -57,7 +57,8 @@ def database_write_seh(data):
     c_d = str(c_t.strftime('%d'))
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
-    result = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('dem boys seh').push(data, login())
+    # result = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('dem boys seh').update(data, login())
+    result = db.child('dem boys seh').set(data, login())
     return result
 
 
@@ -68,7 +69,8 @@ def database_read_seh():
     c_d = str(c_t.strftime('%d'))
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
-    titles = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('dem boys seh').get(login())
+    # titles = db.child(str(f'{c_y} - {c_m}')).child(f'Day - {c_d}').child('dem boys seh').get(login())
+    titles = db.child('dem boys seh').get(login())
     return titles
 
 
