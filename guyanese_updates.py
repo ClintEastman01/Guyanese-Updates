@@ -58,16 +58,15 @@ def choose_random_agency():
     # for simplicity sake i will make a new file
     seh_article = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
 
-    if database_read_seh().each() is not None:
+    if database_read_seh().val() is not None:
         # Check similar title
         print('checking Dem Boys seh titles')
         print(f'Current title - {seh_article["title"]}')
-        for posted in database_read_seh().each():
-            print(f"from database -- -- -- - {posted.val()['title']}")
-            if check_percentage.check_match_percent(seh_article["title"], posted.val()['title']):
-                print(seh_article["title"][0:50] + '--- old Dem boys seh skipped going to news')
-                seh_article["title"] = ""
-                return choose_random_agency_ext()
+        print(f'Current title from database - {database_read_seh().val()["title"]}')
+        if check_percentage.check_match_percent(seh_article["title"], database_read_seh().val()["title"]):
+            print(seh_article["title"][0:50] + '--- old Dem boys seh skipped going to news')
+            seh_article["title"] = ""
+            return choose_random_agency_ext()
 
         data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
         database_write_seh(data)
