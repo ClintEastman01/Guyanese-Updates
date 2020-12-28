@@ -56,7 +56,10 @@ def choose_random_agency():
     # if not then post dem boys seh instead of news and write this title in dem boys seh file
     # if its been posted move forward as before
     # for simplicity sake i will make a new file
-    seh_article = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
+    try:
+        seh_article = dem_boys_seh.get_latest_seh(dem_boys_seh.get_latest_link(dem_boys_seh.url1))
+    except IndexError as error:
+        return choose_random_agency_ext()
 
     if database_read_seh().val() is not None:
         # Check similar title
