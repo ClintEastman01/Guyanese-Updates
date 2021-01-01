@@ -8,7 +8,7 @@ import firebase_db
 import check_percentage
 
 
-def get_villagevoice_post():
+def get_villagevoice_post() -> object:
     random_article = {}
     header = {
         "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -32,14 +32,13 @@ def get_villagevoice_post():
             print('checking for old post...')
             print(f'Current title - {title}')
             for posted in database_read().each():
-                # global counter
                 if check_percentage.check_match_percent(title, posted.val()['title']):
                     print(title[0:50] + '--- old news skipped')
                     try:
                         print("Trying to get another VillageVoice article")
                         return get_random_villagevoice()
                     except RecursionError as err:
-                        print('Can\'t find more news on VillageVoice returning to beginning')
+                        print(f'Can\'t find more news on VillageVoice returning to beginning {err}')
                         return guyanese_updates.check_internet()
 
         if title != '' and short_description != '':

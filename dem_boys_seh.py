@@ -34,7 +34,7 @@ def get_latest_seh(url):
         'date': posted_date,
         'short_description': f"{get_all_p[2].text} - Dem Boys Seh From Kaieteur News {posted_date} - {url}"
     }
-
+    # print(article['short_description'].replace('<br>', '').replace('<br/>', '').replace('<p>', '').replace('</p>', ''))
     return article
 
 

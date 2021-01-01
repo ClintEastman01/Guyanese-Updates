@@ -9,7 +9,7 @@ import firebase_db
 import check_percentage
 
 
-def get_newsroom_post():
+def get_newsroom_post() -> object:
     random_article = {}
     url = 'https://newsroom.gy/feed/'
     grab = requests.get(url).text

@@ -1,7 +1,7 @@
 from firebase_db import database_read_simplewords
 
-sentence1 = "input('sentence1 > ')"
-sentence2 = "input('sentence2 > ')"
+sentence1 = "inpu of in "
+sentence2 = "input('sentence2 > ') of in"
 
 match_percentage = 0
 percent_of_words_matched = 0
@@ -10,8 +10,10 @@ percent_of_words_matched = 0
 def remove_simple_words(words):
     for simple_word in str(database_read_simplewords()).split():
         for word in words:
+            print(simple_word)
             if word.lower() == simple_word.lower():
                 words.remove(word)
+
     return words
 
 

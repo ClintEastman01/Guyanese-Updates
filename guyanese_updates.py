@@ -11,6 +11,7 @@ from urllib.request import urlopen
 from firebase_db import database_read_seh, database_write_seh
 import firebase_db
 
+
 def internet_on():
     try:
         response = urlopen('https://www.google.com/', timeout=1)
@@ -47,7 +48,7 @@ def make_reddit_post(article):
     subreddit = reddit.subreddit('guyana')  # .new(limit=10)
     reddit.validate_on_submit = True
 
-    subreddit.submit(article['title'], selftext=article['short_description'])
+    subreddit.submit(article['title'], selftext=f'''{article['short_description']}''')
 
 
 def choose_random_agency():
@@ -70,7 +71,6 @@ def choose_random_agency():
             print(seh_article["title"][0:50] + '--- old Dem boys seh skipped going to news')
             seh_article["title"] = ""
             return choose_random_agency_ext()
-
         data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
         database_write_seh(data)
         print('Dem Boys Seh Chosen, written to database')
@@ -82,6 +82,8 @@ def choose_random_agency():
         data = {'date': firebase_db.c_t_short, 'title': seh_article["title"]}
         database_write_seh(data)
         print('Dem Boys Seh Chosen, written to database')
+        # # seh_article['short_description'].replace('<br>', '').replace('<br/>', '').replace('<p>', '').replace('</p>', '')
+        #
         return seh_article
 
 
@@ -91,7 +93,6 @@ def choose_random_agency_ext():
     if agency_number == 0:
         if constants.last_agency(constants.newsroom_name):
             print(f'{constants.newsroom_name} was last chosen, choosing another...')
-            # choose_random_agency()
             return villagevoice.get_villagevoice_post()
         else:
             print('Newsroom chosen')
@@ -100,11 +101,11 @@ def choose_random_agency_ext():
 
         if constants.last_agency(constants.villagevoice_name):
             print(f'{constants.villagevoice_name} was last chosen, choosing another...')
-            # choose_random_agency()
             return newsroom.get_newsroom_post()
         else:
             print('Village voice chosen')
             return villagevoice.get_villagevoice_post()
+
 
 if __name__ == "__main__":
     check_internet()
