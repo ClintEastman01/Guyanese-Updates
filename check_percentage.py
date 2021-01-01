@@ -8,9 +8,9 @@ percent_of_words_matched = 0
 
 
 def remove_simple_words(words):
-    for simple_word in str(database_read_simplewords()).split():
+    for simple_word in str(database_read_simplewords().val()).split():
         for word in words:
-            print(simple_word)
+            # print(simple_word)
             if word.lower() == simple_word.lower():
                 words.remove(word)
 
