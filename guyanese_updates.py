@@ -45,7 +45,7 @@ def make_reddit_post(article):
         username=Secrets.username,
         password=Secrets.password
     )
-    subreddit = reddit.subreddit('guyana')  # .new(limit=10)
+    subreddit = reddit.subreddit('watchskunthay')  # .new(limit=10)
     reddit.validate_on_submit = True
 
     subreddit.submit(article['title'], selftext=f'''{article['short_description']}''')
